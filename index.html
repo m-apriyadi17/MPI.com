@@ -321,67 +321,6 @@
     </footer>
     <!-- Footer end -->
 
-    <!-- Audio -->
-    <audio id="background-audio" loop muted>
-      <source
-        src="assets/music/BillieEilish BIRDS OF A FEATHER Lyrics.mp3"
-        type="audio/mp3"
-      />
-    </audio>
-    <!-- Audio end -->
-
-    <button id="play-audio-button" style="display: none">
-      Klik untuk memutar audio
-    </button>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const audio = document.getElementById("background-audio");
-        const playButton = document.getElementById("play-audio-button");
-
-        // Memastikan audio mulai otomatis dalam mode mute
-        audio.muted = true;
-        let audioPlayed = sessionStorage.getItem("audioPlayed");
-
-        function playAudio() {
-          audio
-            .play()
-            .then(() => {
-              audio.muted = false;
-              sessionStorage.setItem("audioPlayed", "true");
-            })
-            .catch((error) => {
-              console.log("Autoplay tidak diizinkan. Menampilkan tombol play.");
-              playButton.style.display = "block"; // Tampilkan tombol jika autoplay gagal
-            });
-        }
-
-        if (!audioPlayed) {
-          // Coba putar audio ketika halaman pertama kali dimuat
-          playAudio();
-        }
-
-        // Tombol klik untuk memulai audio jika autoplay gagal
-        playButton.addEventListener("click", () => {
-          playAudio();
-          playButton.style.display = "none";
-        });
-
-        // Menggunakan IntersectionObserver untuk mendeteksi interaksi pengguna dan mencoba memutar ulang audio
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting && !audioPlayed) {
-              playAudio();
-              observer.disconnect(); // Hentikan observer setelah audio berhasil diputar
-            }
-          });
-        });
-
-        // Target observer pada body untuk mendeteksi ketika halaman terlihat
-        observer.observe(document.body);
-      });
-    </script>
-
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
