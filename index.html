@@ -72,7 +72,7 @@
     <!-- Jumbotron -->
     <section class="jumbotron text-center" style="color: white">
       <img
-        src="assets/images/1728061386881.jpeg"
+        src="assets/images/1730732954581 (1).jpg"
         alt="Yadi"
         width="200"
         class="rounded-circle img-thumbnail"
@@ -327,13 +327,34 @@
     <!-- Footer end -->
 
     <!-- Audio -->
-    <audio autoplay>
+    <audio id="background-audio" autoplay loop>
       <source
         src="assets/music/BillieEilish BIRDS OF A FEATHER Lyrics.mp3"
         type="audio/mp3"
       />
     </audio>
     <!-- Audio end -->
+
+    <script>
+      // Mengecek jika audio belum diputar, maka akan dimulai
+      document.addEventListener("DOMContentLoaded", function () {
+        const audio = document.getElementById("background-audio");
+
+        // Cek apakah audio sudah dimulai sebelumnya
+        if (!sessionStorage.getItem("audioPlayed")) {
+          audio
+            .play()
+            .then(() => {
+              sessionStorage.setItem("audioPlayed", "true"); // Menyimpan status pemutaran
+            })
+            .catch((error) => {
+              console.log(
+                "Autoplay tidak diizinkan. Pengguna perlu interaksi untuk memulai audio."
+              );
+            });
+        }
+      });
+    </script>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
