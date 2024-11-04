@@ -341,24 +341,44 @@
 
         // Memastikan audio mulai otomatis dalam mode mute
         audio.muted = true;
-        audio
-          .play()
-          .then(() => {
-            // Setelah autoplay berhasil, unmute audio dan set session storage
-            audio.muted = false;
-            sessionStorage.setItem("audioPlayed", "true");
-          })
-          .catch((error) => {
-            console.log("Autoplay tidak diizinkan. Menampilkan tombol play.");
-            playButton.style.display = "block"; // Tampilkan tombol jika autoplay gagal
-          });
+        let audioPlayed = sessionStorage.getItem("audioPlayed");
+
+        function playAudio() {
+          audio
+            .play()
+            .then(() => {
+              audio.muted = false;
+              sessionStorage.setItem("audioPlayed", "true");
+            })
+            .catch((error) => {
+              console.log("Autoplay tidak diizinkan. Menampilkan tombol play.");
+              playButton.style.display = "block"; // Tampilkan tombol jika autoplay gagal
+            });
+        }
+
+        if (!audioPlayed) {
+          // Coba putar audio ketika halaman pertama kali dimuat
+          playAudio();
+        }
 
         // Tombol klik untuk memulai audio jika autoplay gagal
         playButton.addEventListener("click", () => {
-          audio.play().then(() => {
-            playButton.style.display = "none"; // Sembunyikan tombol setelah berhasil
+          playAudio();
+          playButton.style.display = "none";
+        });
+
+        // Menggunakan IntersectionObserver untuk mendeteksi interaksi pengguna dan mencoba memutar ulang audio
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !audioPlayed) {
+              playAudio();
+              observer.disconnect(); // Hentikan observer setelah audio berhasil diputar
+            }
           });
         });
+
+        // Target observer pada body untuk mendeteksi ketika halaman terlihat
+        observer.observe(document.body);
       });
     </script>
 
