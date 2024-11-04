@@ -71,12 +71,7 @@
 
     <!-- Jumbotron -->
     <section class="jumbotron text-center" style="color: white">
-      <img
-        src="assets/images/1730732954581 (1).jpg"
-        alt="Yadi"
-        width="200"
-        class="rounded-circle img-thumbnail"
-      />
+      <img src="assets/images/1730736076266.jpg" alt="Yadi" width="200" />
       <h1 class="display-4">M Apriyadi</h1>
       <p class="lead"></p>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
@@ -327,7 +322,7 @@
     <!-- Footer end -->
 
     <!-- Audio -->
-    <audio id="background-audio" autoplay loop>
+    <audio id="background-audio" loop muted>
       <source
         src="assets/music/BillieEilish BIRDS OF A FEATHER Lyrics.mp3"
         type="audio/mp3"
@@ -335,24 +330,35 @@
     </audio>
     <!-- Audio end -->
 
+    <button id="play-audio-button" style="display: none">
+      Klik untuk memutar audio
+    </button>
+
     <script>
-      // Mengecek jika audio belum diputar, maka akan dimulai
       document.addEventListener("DOMContentLoaded", function () {
         const audio = document.getElementById("background-audio");
+        const playButton = document.getElementById("play-audio-button");
 
-        // Cek apakah audio sudah dimulai sebelumnya
-        if (!sessionStorage.getItem("audioPlayed")) {
-          audio
-            .play()
-            .then(() => {
-              sessionStorage.setItem("audioPlayed", "true"); // Menyimpan status pemutaran
-            })
-            .catch((error) => {
-              console.log(
-                "Autoplay tidak diizinkan. Pengguna perlu interaksi untuk memulai audio."
-              );
-            });
-        }
+        // Memastikan audio mulai otomatis dalam mode mute
+        audio.muted = true;
+        audio
+          .play()
+          .then(() => {
+            // Setelah autoplay berhasil, unmute audio dan set session storage
+            audio.muted = false;
+            sessionStorage.setItem("audioPlayed", "true");
+          })
+          .catch((error) => {
+            console.log("Autoplay tidak diizinkan. Menampilkan tombol play.");
+            playButton.style.display = "block"; // Tampilkan tombol jika autoplay gagal
+          });
+
+        // Tombol klik untuk memulai audio jika autoplay gagal
+        playButton.addEventListener("click", () => {
+          audio.play().then(() => {
+            playButton.style.display = "none"; // Sembunyikan tombol setelah berhasil
+          });
+        });
       });
     </script>
 
