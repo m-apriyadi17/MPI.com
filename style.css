@@ -14,6 +14,13 @@ section {
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 body {
-  font-family: Montserrat, "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+  font-family:
+    Montserrat, "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.arabic-text {
+  font-family: "Noto Naskh Arabic", serif;
+  text-align: right;
+  direction: rtl;
 }
